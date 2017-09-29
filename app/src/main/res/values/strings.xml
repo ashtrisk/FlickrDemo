@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FlickrDemo</string>
+    <string name="title_activity_networking">NetworkingActivity</string>
+</resources>
