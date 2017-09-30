@@ -43,7 +43,7 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
                 new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        Log.d(TAG, e.getMessage());
+                        Log.d(TAG, "" + e.getMessage());
                         e.printStackTrace();
                         return false;
                     }
@@ -63,6 +63,12 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
                 }
             });
         }
+    }
+
+    @Override
+    public void onViewRecycled(FlickrFeedsViewHolder holder) {
+        super.onViewRecycled(holder);
+        NetworkUtil.clearMemory(holder.imgvFlickrFeed);
     }
 
     private void startNetworkingActivity() {

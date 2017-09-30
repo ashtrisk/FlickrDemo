@@ -22,10 +22,10 @@ public class VolleySingleton {
     private RequestQueue requestQueue;
 
     private VolleySingleton(Context context) {
-        // Instantiate the cache with 5 MB limit
-        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024 * 5);
+        // Instantiate the cache with 3 MB limit
+        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024 * 3);
 
-        // Set up the network to use HttpURLConnection as the HTTP client.
+        // Set up the network to use HttpURLConnection as the HTTP client.e
         Network network = new BasicNetwork(new HurlStack());
 
         // Instantiate the RequestQueue.
@@ -36,7 +36,7 @@ public class VolleySingleton {
 
     public static VolleySingleton getInstance(Context context){
         if(instance == null){
-            instance = new VolleySingleton(context);
+            instance = new VolleySingleton(context.getApplicationContext());
         }
         return instance;
     }
@@ -44,5 +44,14 @@ public class VolleySingleton {
     public void addRequest(Request<? extends Object> stringRequest){
         // Add the request to the RequestQueue.
         requestQueue.add(stringRequest);
+    }
+
+    public void cancelAllRequests(String tag){
+        requestQueue.cancelAll(tag);
+    }
+
+    public void clean(){
+        requestQueue = null;
+        instance = null;
     }
 }

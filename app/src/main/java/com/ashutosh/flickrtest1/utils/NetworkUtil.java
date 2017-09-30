@@ -3,6 +3,7 @@ package com.ashutosh.flickrtest1.utils;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
@@ -11,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.ashutosh.flickrtest1.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 
 import org.json.JSONObject;
@@ -25,8 +27,22 @@ public class NetworkUtil {
 
     /* Load image using glide (with placeholder) center crop */
     public static void loadImage(Context context, String imgUrl, ImageView imgView, RequestListener requestListener){
-        Glide.with(context).load(imgUrl).placeholder(R.drawable.placeholder).centerCrop()
-                .listener(requestListener).into(imgView);
+        if(imgView != null){
+            Glide.with(context)
+                    .load(imgUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT) // only cache result image
+                    .skipMemoryCache(true)  // don't cache this image in memory, though disk cache will still work
+                    .placeholder(R.drawable.placeholder)
+                    .centerCrop()   // maintain the aspect ratio of image but show image fully in the view.
+                    .listener(requestListener)
+                    .into(imgView);
+        }
+    }
+
+    public static void clearMemory(View view){
+        if(view != null){
+            Glide.clear(view);
+        }
     }
 
     /* Fetch flickr images data from server using Flick API */
@@ -60,6 +76,7 @@ public class NetworkUtil {
                     }
                 });
 
+        jsonObjRequest.setTag(Constants.COMMON_REQUEST_TAG);
         VolleySingleton.getInstance(context).addRequest(jsonObjRequest);
     }
 

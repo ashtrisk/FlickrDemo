@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRvFlickrFeeds.setLayoutManager(linearLayoutManager);
         mRvFlickrFeeds.setAdapter(mFlickrAdapter);
+        /* Number of items recycler view caches for current visible screen. Default is 2 */
+        mRvFlickrFeeds.setItemViewCacheSize(0);
 
         mRvFlickrFeeds.addOnScrollListener(new RecyclerOnScrollListener(linearLayoutManager) {
             @Override
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(String msg) {
-                Log.d(TAG, msg);
+//                Log.d(TAG, msg);
             }
         });
     }

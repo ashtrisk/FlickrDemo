@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.ashutosh.flickrtest1.utils.Constants;
 import com.ashutosh.flickrtest1.utils.NetworkUtil;
 import com.ashutosh.flickrtest1.utils.Utility;
+import com.ashutosh.flickrtest1.utils.VolleySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,19 @@ public class NetworkingActivity extends AppCompatActivity {
                 fetchData(Utility.parseInteger(value));
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        /* Cancel all queued requests */
+        VolleySingleton.getInstance(this).cancelAllRequests(Constants.COMMON_REQUEST_TAG);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        VolleySingleton.getInstance(this).clean();
     }
 
     private void fetchData(int numOfTimes) {
