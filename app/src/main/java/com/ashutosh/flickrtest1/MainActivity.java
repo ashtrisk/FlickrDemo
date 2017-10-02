@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* For this task set low memory cache, decreases max. memory usage by half */
+        NetworkUtil.setMemoryCategoryLow(this);
+
         imgUrlList = new ArrayList<>();
         mFlickrAdapter = new FlickrFeedsAdapter(this, imgUrlList);
 
@@ -99,8 +102,10 @@ public class MainActivity extends AppCompatActivity {
         /* increase page number by one so that next request fetches images for next page */
         currPageNumber++;
 
+        int posNewItem = imgUrlList.size();
         imgUrlList.addAll(imgUrls);
-        mFlickrAdapter.notifyDataSetChanged();
+//        mFlickrAdapter.notifyDataSetChanged();
+        mFlickrAdapter.notifyItemInserted(posNewItem);
     }
 
     private void printUrls() {

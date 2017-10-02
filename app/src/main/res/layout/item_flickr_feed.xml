@@ -8,13 +8,13 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/feed_item_height"
         android:scaleType="centerCrop"
         android:id="@+id/img_item_flickr_feed"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/feed_item_height"
         android:id="@+id/progress">
 
         <TextView

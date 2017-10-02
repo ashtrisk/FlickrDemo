@@ -27,9 +27,17 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
     private final Context context;
     private List<String> imgUrlsList;
 
+    private int itemWidth;
+    private int itemHeight;
+
     public FlickrFeedsAdapter(Context context, List<String> imgUrlsList) {
         this.context = context;
         this.imgUrlsList = imgUrlsList;
+        /* items are as wide as screen width */
+        this.itemWidth = Utility.getScreenWidth(context);
+        this.itemHeight = context.getResources().getDimensionPixelSize(R.dimen.feed_item_height);
+
+        Log.d(TAG, "Width:Height = " + itemWidth + ":" + itemHeight);
     }
 
     @Override
@@ -39,7 +47,9 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
 
     @Override
     public void onBindViewHolder(final FlickrFeedsViewHolder holder, int position) {
+        /* Giving specific width and height to to transform images to this size & save images for only this size in memory */
         NetworkUtil.loadImage(context, imgUrlsList.get(position), holder.imgvFlickrFeed,
+                itemWidth, itemHeight,
                 new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -51,9 +61,20 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         holder.progress.setVisibility(View.GONE);
+
+                        /* we can decrease the resource width here, if required */
+//                        float width = resource.getIntrinsicWidth();
+//                        float height = resource.getIntrinsicHeight();
                         return false;
                     }
                 });
+
+        /* clear memory periodically to free up memory */
+        if(position % 10 == 0){
+            NetworkUtil.clearMemory(context);
+        } else if(position % 5 == 0){
+            NetworkUtil.trimMemory(context);
+        }
 
         if(position == 0){
             holder.imgvFlickrFeed.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +89,7 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
     @Override
     public void onViewRecycled(FlickrFeedsViewHolder holder) {
         super.onViewRecycled(holder);
-        NetworkUtil.clearMemory(holder.imgvFlickrFeed);
+        NetworkUtil.clearViewMemory(holder.imgvFlickrFeed);
     }
 
     private void startNetworkingActivity() {

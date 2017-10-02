@@ -22,8 +22,8 @@ public class VolleySingleton {
     private RequestQueue requestQueue;
 
     private VolleySingleton(Context context) {
-        // Instantiate the cache with 3 MB limit
-        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024 * 3);
+        // Instantiate the cache with 1 MB limit which may be good enough
+        Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
 
         // Set up the network to use HttpURLConnection as the HTTP client.e
         Network network = new BasicNetwork(new HurlStack());
