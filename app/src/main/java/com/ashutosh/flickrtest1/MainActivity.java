@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mRvFlickrFeeds.setLayoutManager(linearLayoutManager);
         mRvFlickrFeeds.setAdapter(mFlickrAdapter);
         /* Number of items recycler view caches for current visible screen. Default is 2 */
-        mRvFlickrFeeds.setItemViewCacheSize(0);
+        //mRvFlickrFeeds.setItemViewCacheSize(0);
 
         mRvFlickrFeeds.addOnScrollListener(new RecyclerOnScrollListener(linearLayoutManager) {
             @Override

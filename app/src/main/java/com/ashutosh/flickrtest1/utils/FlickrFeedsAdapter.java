@@ -70,9 +70,9 @@ public class FlickrFeedsAdapter extends RecyclerView.Adapter<FlickrFeedsAdapter.
                 });
 
         /* clear memory periodically to free up memory */
-        if(position % 10 == 0){
+        if(position % 50 == 0){
             NetworkUtil.clearMemory(context);
-        } else if(position % 5 == 0){
+        } else if(position % 22 == 0){
             NetworkUtil.trimMemory(context);
         }
 
